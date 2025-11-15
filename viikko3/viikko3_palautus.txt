@@ -1,0 +1,114 @@
+PET OWNER:
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`owner`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`owner` (
+`idowner` INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(45) NOT NULL,
+PRIMARY KEY (`idowner`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`pet`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`pet` (
+`name` VARCHAR(20) NOT NULL,
+`species` VARCHAR(20) NOT NULL,
+`sex` CHAR(1) NULL,
+`birth` DATE NULL,
+`death` DATE NULL,
+`idpet` INT NOT NULL AUTO_INCREMENT,
+`idowner` INT NOT NULL,
+PRIMARY KEY (`idpet`),
+INDEX `idowner\_idx` (`idowner` ASC) VISIBLE,
+CONSTRAINT `fk\_idowner`
+    **FOREIGN KEY (`idowner`)**
+
+    **REFERENCES `mydb`.`owner` (`idowner`)**
+
+    **ON DELETE NO ACTION**
+
+    **ON UPDATE NO ACTION)**
+
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+mysql> DESC pet;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| name    | varchar(20) | YES  |     | NULL    |       |
+| owner   | varchar(20) | YES  |     | NULL    |       |
+| species | varchar(20) | YES  |     | NULL    |       |
+| sex     | char(1)     | YES  |     | NULL    |       |
+| birth   | date        | YES  |     | NULL    |       |
+| death   | date        | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.02 sec)
+
+mysql> DESC owner;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| idowner | int         | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(45) | NO   |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+2 rows in set (0.02 sec)
+
+
+5- Employees, osa 1
+
+
+a)select * from departments;
+b)select distinct title from titles;
+c)select min(salary) from salaries;
+  select max(salary) from salaries;
+d)select avg(salary) from salaries;
+e)select * from employees where last_name='Facello';
+f)select count(*) from employees where birth_date > '1950-01-01' and birth_date < '1960-01-01';
+g)select gender as Sukupuoli,count(*) as kpl from employees group by gender;
+
+7 - Employees, osa 2
+
+a) select * from employees order by last_name asc limit 10;
+b) select * from employees order by last_name asc, first_name asc limit 10;
+c) select * from employees order by hire_date desc limit 5;
+
+d)SELECT first_name, last_name, salary from employees join salaries using (emp_no) order by salary desc limit 1;
+e)SELECT first_name, last_name, salary from employees join salaries using (emp_no) order by salary asc limit 1;
+f)SELECT first_name, last_name, salary from employees join salaries using (emp_no) where salary > 150000;
+g)select count(*) as sales_employees from employees join dept_emp de using (emp_no) join departments using (dept_no) where dept_name = 'Sales';
+h)select first_name, last_name, dept_name from employees join dept_manager using (emp_no) join departments using (dept_no);
+i)select avg(salary) as avg_sales_salary from departments join dept_emp using (dept_no) join salaries using (emp_no) where dept_name = 'Sales';
+j)select avg(salary) as avg_marketing_salary from departments join dept_emp using (dept_no) join salaries using (emp_no) where dept_name = 'Marketing';
+
+Tehtävä 8. - Sakila
+
+a)select name from language order by name asc;
+b)select title from film join film_actor using (film_id) join actor using (actor_id) where last_name = 'Temple';
+c)select actor.first_name, actor.last_name from actor join film_actor using (actor_id) JOIN film using (film_id) where film.title = 'Ghost Groundhog';
+d)select count(*) as horror_movies from film join film_category using (film_id) join category using (category_id) where category.name = 'Horror';
+e)select film.title from film join film_category using (film_id) join category using (category_id) where category.name = 'Horror';
